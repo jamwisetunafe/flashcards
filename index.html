@@ -46,7 +46,8 @@
 
     <script>
         let flashcards = [];
-        let current = 0;
+        let history = [];
+        let current = null;
         let showingDutch = true;
 
         // Load CSV file
@@ -58,7 +59,7 @@
                     const [dutch, english] = line.split(',');
                     flashcards.push({ dutch: dutch.trim(), english: english.trim() });
                 });
-                showCard();
+                showRandomCard();
             })
             .catch(err => {
                 document.getElementById('card').textContent = "Error loading CSV!";
@@ -66,27 +67,36 @@
             });
 
         function showCard() {
+            if (!current) return;
+            document.getElementById('card').textContent = showingDutch ? current.dutch : current.english;
+        }
+
+        function showRandomCard() {
             if (flashcards.length === 0) return;
-            const card = flashcards[current];
-            document.getElementById('card').textContent = showingDutch ? card.dutch : card.english;
+            const randomIndex = Math.floor(Math.random() * flashcards.length);
+            current = flashcards[randomIndex];
+            history.push(current);
+            showingDutch = true;
+            showCard();
+        }
+
+        function nextCard() {
+            showRandomCard();
+        }
+
+        function prevCard() {
+            if (history.length <= 1) return; // no previous card
+            history.pop(); // remove current card
+            current = history[history.length - 1]; // get previous card
+            showingDutch = true;
+            showCard();
         }
 
         document.getElementById('card').addEventListener('click', () => {
             showingDutch = !showingDutch;
             showCard();
         });
-
-        function nextCard() {
-            current = (current + 1) % flashcards.length;
-            showingDutch = true;
-            showCard();
-        }
-
-        function prevCard() {
-            current = (current - 1 + flashcards.length) % flashcards.length;
-            showingDutch = true;
-            showCard();
-        }
     </script>
 </body>
 </html>
+
