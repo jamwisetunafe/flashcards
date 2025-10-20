@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flashcards</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 50px;
+        }
+        #card {
+            width: 300px;
+            height: 200px;
+            border: 2px solid #333;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            text-align: center;
+            transition: transform 0.3s;
+            user-select: none;
+        }
+        #buttons {
+            margin-top: 20px;
+        }
+        button {
+            margin: 0 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="card">Loading...</div>
+
+    <div id="buttons">
+        <button onclick="prevCard()">Previous</button>
+        <button onclick="nextCard()">Next</button>
+    </div>
+
+    <script>
+        let flashcards = [];
+        let current = 0;
+        let showingDutch = true;
+
+        // Load CSV file
+        fetch('flashcards.csv')
+            .then(response => response.text())
+            .then(data => {
+                const lines = data.trim().split('\n');
+                lines.forEach(line => {
+                    const [dutch, english] = line.split(',');
+                    flashcards.push({ dutch: dutch.trim(), english: english.trim() });
+                });
+                showCard();
+            })
+            .catch(err => {
+                document.getElementById('card').textContent = "Error loading CSV!";
+                console.error(err);
+            });
+
+        function showCard() {
+            if (flashcards.length === 0) return;
+            const card = flashcards[current];
+            document.getElementById('card').textContent = showingDutch ? card.dutch : card.english;
+        }
+
+        document.getElementById('card').addEventListener('click', () => {
+            showingDutch = !showingDutch;
+            showCard();
+        });
+
+        function nextCard() {
+            current = (current + 1) % flashcards.length;
+            showingDutch = true;
+            showCard();
+        }
+
+        function prevCard() {
+            current = (current - 1 + flashcards.length) % flashcards.length;
+            showingDutch = true;
+            showCard();
+        }
+    </script>
+</body>
+</html>
