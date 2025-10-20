@@ -33,6 +33,9 @@
             padding: 10px 20px;
             font-size: 16px;
         }
+        #languageToggle {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -44,11 +47,18 @@
         <button onclick="nextCard()">Next</button>
     </div>
 
+    <div id="languageToggle">
+        <label>Show first:</label>
+        <button onclick="setLanguage('dutch')">Dutch</button>
+        <button onclick="setLanguage('english')">English</button>
+    </div>
+
     <script>
         let flashcards = [];
         let history = [];
         let current = null;
-        let showingDutch = true;
+        let firstLanguage = 'dutch'; // default: Dutch first
+        let showingFirst = true;
 
         // Load CSV file
         fetch('flashcards.csv')
@@ -68,7 +78,11 @@
 
         function showCard() {
             if (!current) return;
-            document.getElementById('card').textContent = showingDutch ? current.dutch : current.english;
+            if (showingFirst) {
+                document.getElementById('card').textContent = firstLanguage === 'dutch' ? current.dutch : current.english;
+            } else {
+                document.getElementById('card').textContent = firstLanguage === 'dutch' ? current.english : current.dutch;
+            }
         }
 
         function showRandomCard() {
@@ -76,7 +90,7 @@
             const randomIndex = Math.floor(Math.random() * flashcards.length);
             current = flashcards[randomIndex];
             history.push(current);
-            showingDutch = true;
+            showingFirst = true;
             showCard();
         }
 
@@ -88,15 +102,22 @@
             if (history.length <= 1) return; // no previous card
             history.pop(); // remove current card
             current = history[history.length - 1]; // get previous card
-            showingDutch = true;
+            showingFirst = true;
             showCard();
         }
 
         document.getElementById('card').addEventListener('click', () => {
-            showingDutch = !showingDutch;
+            showingFirst = !showingFirst;
             showCard();
         });
+
+        function setLanguage(lang) {
+            firstLanguage = lang;
+            showingFirst = true;
+            showCard();
+        }
     </script>
 </body>
 </html>
+
 
