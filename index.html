@@ -25,16 +25,13 @@
             transition: transform 0.3s;
             user-select: none;
         }
-        #buttons {
+        #buttons, #languageToggle {
             margin-top: 20px;
         }
         button {
             margin: 0 10px;
             padding: 10px 20px;
             font-size: 16px;
-        }
-        #languageToggle {
-            margin-top: 20px;
         }
     </style>
 </head>
@@ -55,8 +52,9 @@
 
     <script>
         let flashcards = [];
+        let shuffled = [];
         let history = [];
-        let current = null;
+        let currentIndex = 0;
         let firstLanguage = 'dutch'; // default: Dutch first
         let showingFirst = true;
 
@@ -67,43 +65,54 @@
                 const lines = data.trim().split('\n');
                 lines.forEach(line => {
                     const [dutch, english] = line.split(',');
-                    flashcards.push({ dutch: dutch.trim(), english: english.trim() });
+                    if (dutch && english) {
+                        flashcards.push({ dutch: dutch.trim(), english: english.trim() });
+                    }
                 });
-                showRandomCard();
+                shuffleDeck();
+                showCard();
             })
             .catch(err => {
                 document.getElementById('card').textContent = "Error loading CSV!";
                 console.error(err);
             });
 
-        function showCard() {
-            if (!current) return;
-            if (showingFirst) {
-                document.getElementById('card').textContent = firstLanguage === 'dutch' ? current.dutch : current.english;
-            } else {
-                document.getElementById('card').textContent = firstLanguage === 'dutch' ? current.english : current.dutch;
+        function shuffleDeck() {
+            shuffled = [...flashcards];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
             }
+            currentIndex = 0;
+            history = [];
         }
 
-        function showRandomCard() {
-            if (flashcards.length === 0) return;
-            const randomIndex = Math.floor(Math.random() * flashcards.length);
-            current = flashcards[randomIndex];
-            history.push(current);
-            showingFirst = true;
-            showCard();
+        function showCard() {
+            if (shuffled.length === 0) return;
+            const current = shuffled[currentIndex];
+            if (!current) return;
+            const text = showingFirst
+                ? (firstLanguage === 'dutch' ? current.dutch : current.english)
+                : (firstLanguage === 'dutch' ? current.english : current.dutch);
+            document.getElementById('card').textContent = text;
         }
 
         function nextCard() {
-            showRandomCard();
+            if (shuffled.length === 0) return;
+            showingFirst = true;
+            currentIndex++;
+            if (currentIndex >= shuffled.length) {
+                shuffleDeck(); // reshuffle once all cards seen
+            }
+            showCard();
         }
 
         function prevCard() {
-            if (history.length <= 1) return; // no previous card
-            history.pop(); // remove current card
-            current = history[history.length - 1]; // get previous card
-            showingFirst = true;
-            showCard();
+            if (currentIndex > 0) {
+                currentIndex--;
+                showingFirst = true;
+                showCard();
+            }
         }
 
         document.getElementById('card').addEventListener('click', () => {
@@ -119,5 +128,6 @@
     </script>
 </body>
 </html>
+
 
 
