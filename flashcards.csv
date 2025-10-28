@@ -99,14 +99,14 @@ de kroket,Dutch fried ragout bar
 de pannenkoek,the pancake
 de stroopwafel,the syrup waffle
 drop,liquorice
-"de, het snoep",the sweets
+de/ het snoep,the sweets
 wie,who
 wat,what
 dat,that
 dit,this
 welke,which
-deze,"these, this"
-die,"that, those"
+deze,these/ this
+die,that/ those
 waar,where
 hier,here
 daar,there
@@ -119,7 +119,7 @@ zo,like this
 hoeveel,how much
 de bloem,the flower
 waarom,why
-daarom,that?s why
+daarom,that큦 why
 want,because
 omdat,because
 maar,but
@@ -151,7 +151,7 @@ de bibliotheek,the library
 de school,the school
 de universiteit,the university
 nul,zero
-굚n,one
+een,one
 twee,two
 drie,three
 vier,four
@@ -184,7 +184,7 @@ de vraag,the question
 antwoorden,to answer
 het antwoord,the answer
 kopen,to buy
-krijgen,"to get, to receive"
+krijgen,to get/ to receive
 eten,to eat
 drinken,to drink
 rijden,to drive
@@ -207,7 +207,7 @@ wachten,to wait
 groot,big
 klein,small
 lekker,tasty
-vies,"dirty, disgusting"
+vies,dirty/ disgusting
 schoon,clean
 mooi,beautiful
 de tulp,the tulip
@@ -219,16 +219,16 @@ rijk,rich
 donker,dark
 licht,light
 zwaar,heavy
-hard,"hard, fast"
-zacht,"soft, slow"
+hard,hard/ fast
+zacht,soft/ slow
 snel,fast
-lief,"lovely, sweet"
+lief,lovely/ sweet
 stout,naughty
 koud,cold
 warm,warm
 duur,expensive
 goedkoop,cheap
-hoog,"high, tall"
+hoog,high/ tall
 laag,low
 week,week
 de dagen van de week,the days of the week
@@ -265,15 +265,15 @@ in,in
 voor,in front of
 achter,behind
 naast,next to
-beneden,"down, downstairs"
-boven,"above, up, upstairs"
+beneden,down/ downstairs
+boven,above/ up/ upstairs
 onder,below
-op,"at, on top"
+op,at/ on top
 tussen,between
 het midden,the middle
 over,about
 over,over
-bij,"at, near"
+bij,at/ near
 binnen,inside
 buiten,outside
 tegen,against
@@ -287,8 +287,8 @@ hoe laat?,what time?
 hoe laat is het?,what time is it?
 de klok,the clock
 het uur,the hour
-twee uur,two o?clock
-om tien uur,at ten o?clock
+twee uur,two o큓lock
+om tien uur,at ten o큓lock
 half vier,half past three
 half een,half past twelve
 het kwartier,the quarter
@@ -304,16 +304,16 @@ hoe lang?,how long?
 het duurt drie uur,it takes three hours
 van twee uur tot vijf uur,from two till five o?clock
 de nacht,the night
-?s nachts,at night
+큦 nachts,at night
 "de ochtend, de morgen",the morning
-?s ochtends / ?s morgens,in the morning
+큦 ochtends / 큦 morgens,in the morning
 de middag,the afternoon
-?s middags,in the afternoon
+큦 middags,in the afternoon
 de avond,the evening
-?s avonds,in the evening
-kwart voor zeven ?s ochtends,quarter to seven am
+큦 avonds,in the evening
+kwart voor zeven 큦 ochtends,quarter to seven am
 middernacht,midnight
-twaalf uur ?s middags,noon
+twaalf uur 큦 middags,noon
 vrije tijd,leisure time
 de hobby,the hobby
 reizen,to travel
@@ -339,7 +339,136 @@ koken,to cook
 kunst,art
 verjaardag,the birthday
 een verjaardag vieren,to celebrate a birthday
-hij is jarig,it?s his birthday
+hij is jarig,it큦 his birthday
 zingen,to sing
 dansen,to dance
 winkelen,to go shopping
+de gracht,the canal
+het grachtenpand,the canal house
+de woonboot,the house boat
+wonen,to live
+het paleis,the palace
+pont,the ferry
+de rondvaart,the canal cruise
+het museum,the museum
+het concert,the concert
+het gebouw,the building
+het concertgebouw,the Concertgebouw
+het plein,the square
+het fietspad,the bicycle track
+de brug,the bridge
+het eiland,the island
+de ring,the ring/ the ring road
+de coffeeshop,bar where soft drugs is sold
+het stadion,the stadium
+het hoofdkantoor,the head office
+de wallen,the red light district
+de hoer,the prostitute
+het park,the park
+het bos,the forest
+de woning,the house
+de deur,the door
+het raam,the window
+de stoel,the chair
+de kruk,the stool
+de tafel,the table
+de lamp,the lamp
+de televisie,the television
+de kast,the closet
+de wc,the toilet
+de keuken,the kitchen
+het fornuis,the cooker
+de koelkast,the fridge
+de kamer,the room
+de woonkamer,the living room
+de bank,the couch
+de slaapkamer,the sleeping room
+het bed,the bed
+de badkamer,the bathroom
+de douche,the shower
+het bad,the bath tub
+de bijkeuken,the scullery
+de garage,the garage
+de tuin,the garden
+de zolder,the attic
+het lichaam,the body
+het lijf,the body
+het hoofd,the head
+de kop,the head
+de mond,the mouth
+de tand,the tooth
+het oor,the ear
+het oog,the eye
+de bril,the glasses
+de zonnebril,the sunglasses
+de neus,the nose
+het haar,the hair
+de arm,the arm
+de elleboog,the elbow
+de hand,the hand
+de vinger,the finger
+het been,the leg
+de knie,the knee
+de voet,the foot
+de teen,the toe
+de rug,the spine
+de buik,the belly/ the stomach
+de schouder,the shoulder
+de kont,the ass
+de borst,the chest/ the breast
+de baard,the beard
+de snor,the moustache
+het hart,the heart
+de kleren,the clothes
+de kleding,the clothing
+de kledingwinkel,the clothes shop
+de broek,the pants
+de spijkerbroek,the jeans
+de trui,the sweater
+de jas,the coat
+de rok,the skirt
+de jurk,the dress
+de sok,the sock (short)
+de kous,the sock (long)
+de schoen,the shoe
+de klomp,the wooden shoe
+de riem,the belt
+het T-shirt,the T-shirt
+het (onder)hemd,the undershirt
+het overhemd,the shirt
+de blouse,the blouse/ the shirt
+het pak,the suit
+"het, de colbert",the suit jacket
+de stropdas,the tie
+de strik,the bow
+de pyjama,the pyjamas
+de onderbroek,the undershorts
+de bh,the bra
+de hoed,the hat
+de das,the scarf
+doen,to do
+beginnen,to begin
+geloven,to believe
+brengen,to bring
+halen,to pick up
+lenen,to borrow
+bellen,to call
+kunnen,to can
+sluiten,to close
+snijden,to cut
+beslissen,to decide
+vallen,to fall
+voelen,to feel/ to touch
+volgen,to follow
+gebeuren,to happen
+iets,something
+helpen,to help
+houden,to hold/ to keep
+houden van,to love
+weten,to know
+kennen,to know
+leuk vinden,to like
+laten,to leave
+verliezen,to lose
+winnen,to win
+maken,to make
