@@ -24,8 +24,9 @@
             text-align: center;
             transition: transform 0.3s;
             user-select: none;
+            padding: 20px;
         }
-        #buttons, #languageToggle {
+        #buttons, #languageToggle, #learningButtons {
             margin-top: 20px;
         }
         button {
@@ -44,6 +45,11 @@
         <button onclick="nextCard()">Next</button>
     </div>
 
+    <div id="learningButtons">
+        <button onclick="markKnown()">I know this</button>
+        <button onclick="markUnknown()">I don't know this</button>
+    </div>
+
     <div id="languageToggle">
         <label>Show first:</label>
         <button onclick="setLanguage('dutch')">Dutch</button>
@@ -52,82 +58,93 @@
 
     <script>
         let flashcards = [];
-        let shuffled = [];
+        let weights = [];  
         let history = [];
-        let currentIndex = 0;
-        let firstLanguage = 'dutch'; // default: Dutch first
+        let current = null;
         let showingFirst = true;
+        let firstLanguage = 'dutch';
 
-        // Load CSV file
+        // ⚡ Load CSV
         fetch('flashcards.csv')
             .then(response => response.text())
             .then(data => {
                 const lines = data.trim().split('\n');
                 lines.forEach(line => {
                     const [dutch, english] = line.split(',');
-                    if (dutch && english) {
-                        flashcards.push({ dutch: dutch.trim(), english: english.trim() });
-                    }
+                    flashcards.push({ dutch: dutch.trim(), english: english.trim() });
+                    weights.push(1); // start every card with weight 1
                 });
-                shuffleDeck();
-                showCard();
-            })
-            .catch(err => {
-                document.getElementById('card').textContent = "Error loading CSV!";
-                console.error(err);
+                nextCard();
             });
 
-        function shuffleDeck() {
-            shuffled = [...flashcards];
-            for (let i = shuffled.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        // 🎯 Weighted random selection
+        function pickWeightedRandom() {
+            const totalWeight = weights.reduce((a, b) => a + b, 0);
+            let r = Math.random() * totalWeight;
+
+            for (let i = 0; i < weights.length; i++) {
+                if (r < weights[i]) return i;
+                r -= weights[i];
             }
-            currentIndex = 0;
-            history = [];
+            return 0;
         }
 
+        // 📌 Display card
         function showCard() {
-            if (shuffled.length === 0) return;
-            const current = shuffled[currentIndex];
             if (!current) return;
             const text = showingFirst
                 ? (firstLanguage === 'dutch' ? current.dutch : current.english)
                 : (firstLanguage === 'dutch' ? current.english : current.dutch);
+
             document.getElementById('card').textContent = text;
         }
 
+        // ➡️ Next random card (weighted)
         function nextCard() {
-            if (shuffled.length === 0) return;
             showingFirst = true;
-            currentIndex++;
-            if (currentIndex >= shuffled.length) {
-                shuffleDeck(); // reshuffle once all cards seen
-            }
+            const index = pickWeightedRandom();
+            current = flashcards[index];
+            history.push(index);
             showCard();
         }
 
+        // ⬅️ Previous card
         function prevCard() {
-            if (currentIndex > 0) {
-                currentIndex--;
-                showingFirst = true;
-                showCard();
-            }
+            if (history.length <= 1) return;
+            history.pop();
+            const lastIndex = history[history.length - 1];
+            current = flashcards[lastIndex];
+            showingFirst = true;
+            showCard();
         }
 
+        // 🔄 Flip card
         document.getElementById('card').addEventListener('click', () => {
             showingFirst = !showingFirst;
             showCard();
         });
 
+        // 🌍 Set language first
         function setLanguage(lang) {
             firstLanguage = lang;
             showingFirst = true;
             showCard();
         }
+
+        // 📉 Mark known → reduce weight
+        function markKnown() {
+            const index = flashcards.indexOf(current);
+            weights[index] = Math.max(1, weights[index] - 1);
+            nextCard();
+        }
+
+        // 📈 Mark unknown → increase weight
+        function markUnknown() {
+            const index = flashcards.indexOf(current);
+            weights[index] = Math.min(10, weights[index] + 1);
+            nextCard();
+        }
     </script>
+
 </body>
 </html>
-
-
-
