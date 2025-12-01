@@ -58,11 +58,23 @@
 
     <script>
         let flashcards = [];
-        let weights = [];  
+        let weights = [];   
         let history = [];
         let current = null;
         let showingFirst = true;
         let firstLanguage = 'dutch';
+
+        // 📦 Load saved weights
+        function loadWeightsFromStorage() {
+            const saved = localStorage.getItem('flashcardWeights');
+            if (saved) return JSON.parse(saved);
+            return null;
+        }
+
+        // 💾 Save weights
+        function saveWeightsToStorage() {
+            localStorage.setItem('flashcardWeights', JSON.stringify(weights));
+        }
 
         // ⚡ Load CSV
         fetch('flashcards.csv')
@@ -72,15 +84,24 @@
                 lines.forEach(line => {
                     const [dutch, english] = line.split(',');
                     flashcards.push({ dutch: dutch.trim(), english: english.trim() });
-                    weights.push(1); // start every card with weight 1
                 });
+
+                // Load saved weights or create new ones
+                const saved = loadWeightsFromStorage();
+                
+                if (saved && saved.length === flashcards.length) {
+                    weights = saved;
+                } else {
+                    weights = Array(flashcards.length).fill(1);
+                }
+
                 nextCard();
             });
 
         // 🎯 Weighted random selection
         function pickWeightedRandom() {
-            const totalWeight = weights.reduce((a, b) => a + b, 0);
-            let r = Math.random() * totalWeight;
+            const total = weights.reduce((a, b) => a + b, 0);
+            let r = Math.random() * total;
 
             for (let i = 0; i < weights.length; i++) {
                 if (r < weights[i]) return i;
@@ -92,6 +113,7 @@
         // 📌 Display card
         function showCard() {
             if (!current) return;
+
             const text = showingFirst
                 ? (firstLanguage === 'dutch' ? current.dutch : current.english)
                 : (firstLanguage === 'dutch' ? current.english : current.dutch);
@@ -99,7 +121,7 @@
             document.getElementById('card').textContent = text;
         }
 
-        // ➡️ Next random card (weighted)
+        // ➡️ Next weighted card
         function nextCard() {
             showingFirst = true;
             const index = pickWeightedRandom();
@@ -112,36 +134,38 @@
         function prevCard() {
             if (history.length <= 1) return;
             history.pop();
-            const lastIndex = history[history.length - 1];
-            current = flashcards[lastIndex];
+            const prevIndex = history[history.length - 1];
+            current = flashcards[prevIndex];
             showingFirst = true;
             showCard();
         }
 
-        // 🔄 Flip card
+        // 🔄 Flip on click
         document.getElementById('card').addEventListener('click', () => {
             showingFirst = !showingFirst;
             showCard();
         });
 
-        // 🌍 Set language first
+        // 🌍 Change default language
         function setLanguage(lang) {
             firstLanguage = lang;
             showingFirst = true;
             showCard();
         }
 
-        // 📉 Mark known → reduce weight
+        // 📉 Mark known
         function markKnown() {
             const index = flashcards.indexOf(current);
             weights[index] = Math.max(1, weights[index] - 1);
+            saveWeightsToStorage();
             nextCard();
         }
 
-        // 📈 Mark unknown → increase weight
+        // 📈 Mark unknown
         function markUnknown() {
             const index = flashcards.indexOf(current);
             weights[index] = Math.min(10, weights[index] + 1);
+            saveWeightsToStorage();
             nextCard();
         }
     </script>
